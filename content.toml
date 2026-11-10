@@ -1,0 +1,287 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  content.toml — everything shown on the website lives here.
+#
+#  Edit this file, then run `make preview` to see the result locally,
+#  and `git commit -am "..." && git push` to publish.
+#
+#  Inline formatting allowed in any text field:
+#    **bold**   *italic*   [link text](https://...)   `code`
+#  Separate paragraphs with a blank line inside """ ... """ blocks.
+#  Leave a field empty ("") to hide it.
+# ─────────────────────────────────────────────────────────────────────────────
+
+[site]
+title       = "Gabriele Fabbro — Theoretical Chemistry"
+description = "Gabriele Fabbro, researcher in theoretical chemistry at NTNU. Coupled-cluster theory for open quantum systems, relativistic coupled cluster, nuclear quadrupole moments."
+url         = "https://gabrielefabbro.github.io/website"  # e.g. "https://gfabbro.github.io" — used for social previews
+updated     = ""          # leave empty: filled in automatically at build time
+
+[person]
+name        = "Gabriele Fabbro"
+role        = "Researcher in Theoretical Chemistry"
+affiliation = "Norwegian University of Science and Technology (NTNU)"
+location    = "Trondheim, Norway"
+photo       = "assets/photo.jpg"
+tagline     = "I develop coupled-cluster methods — from relativistic molecules to electronically open systems."
+
+[links]
+email   = "gabriele.fabbro@ntnu.no"
+orcid   = ""              # e.g. "https://orcid.org/0000-0000-0000-0000"
+scholar = ""              # Google Scholar profile URL
+github  = ""              # e.g. "https://github.com/username"
+cv      = "assets/cv_gfabbro.pdf"
+
+# ── About ────────────────────────────────────────────────────────────────────
+[about]
+text = """
+I am a theoretical chemist working on **coupled-cluster theory**, the hierarchy of methods that
+underpins much of high-accuracy quantum chemistry. My work sits where method development meets
+implementation: deriving the equations, generating them automatically, and making them run in
+production electronic-structure codes such as [DIRAC](https://diracprogram.org) and
+[eT](https://etprogram.org).
+
+I obtained my PhD in Theoretical Chemistry at the Université de Toulouse with Dr. Trond Saue,
+working on highly accurate relativistic coupled-cluster methods for molecular properties.
+I am now a researcher at NTNU in Norway.
+"""
+
+# ── Now ──────────────────────────────────────────────────────────────────────
+[now]
+heading = "OpenQuantum"
+place   = "NTNU · Trondheim"
+text = """
+I am part of the **OpenQuantum** project, where I develop coupled-cluster theory for
+*electronically open systems* — molecules and extended systems, such as surfaces, that exchange
+electrons with their surroundings.
+
+A first ingredient is the reference: I implemented fractional-occupation (FON-UHF) and
+state-averaged (SA-UHF) Hartree–Fock in eT, and studied the spurious *ensemble ghost interaction*
+that appears in fractional-occupation Hartree–Fock.
+"""
+
+# ── Research lines ───────────────────────────────────────────────────────────
+#  Add or remove [[research]] blocks freely. `icon` is one of:
+#  open, relativity, nucleus, code
+[[research]]
+icon  = "open"
+title = "Coupled cluster for open systems"
+text  = """
+Extending coupled-cluster theory to molecules and surfaces whose electron number is not fixed,
+starting from ensemble and fractional-occupation reference states.
+"""
+
+[[research]]
+icon  = "relativity"
+title = "Relativistic coupled-cluster theory"
+text  = """
+High-order relativistic coupled cluster (up to CCSDTQ) and its expectation values, for molecules
+containing heavy elements where relativity cannot be treated as a small correction.
+"""
+
+[[research]]
+icon  = "nucleus"
+title = "Nuclear electric quadrupole moments"
+text  = """
+Highly accurate electric field gradients at nuclei, combined with experimental spectroscopy,
+to extract reliable nuclear quadrupole moments from molecular systems.
+"""
+
+# ── PhD ──────────────────────────────────────────────────────────────────────
+[phd]
+title    = "Highly Accurate Molecular Properties using High-Order Relativistic Coupled Cluster Theory"
+place    = "Université de Toulouse · Laboratoire de Chimie et Physique Quantiques"
+period   = "2022 – 2025"
+defended = "5 December 2025"
+advisor  = "Dr. Trond Saue"
+project  = "HAMP-vQED"
+text = """
+During my PhD I was a member of the **HAMP-vQED** project, focused on highly accurate relativistic
+coupled-cluster methods.
+
+I developed a diagram-based framework for the **automated generation of expectation values at
+arbitrary excitation rank**, built on the `tenpi` equation generator, and used it to implement
+expectation values at the CCSDT and CCSDTQ levels in the DIRAC program package.
+
+The main target was the electric field gradient (EFG) at nuclear positions — both its chemical
+interpretation beyond the Dailey–Townes model and its use for the reliable extraction of nuclear
+electric quadrupole moments, such as that of ⁸⁷Sr.
+"""
+
+# Highlights shown as a short list next to the PhD text
+highlights = [
+  "Automated Λ-equations and CC density matrices at arbitrary excitation rank (`tenpi`)",
+  "CCSDT and CCSDTQ expectation values in DIRAC",
+  "Chemical analysis of the electric field gradient beyond Dailey–Townes",
+  "Nuclear quadrupole moment of ⁸⁷Sr from molecular calculations",
+]
+
+# Thesis & defence documents: shown as cards with cover, "Read online" and "Download".
+# To replace a file, overwrite it in assets/ (keep the same name) and rebuild.
+[[phd.documents]]
+kind  = "Thesis"
+title = "Highly Accurate Molecular Properties using High-Order Relativistic Coupled Cluster Theory"
+meta  = "Defended 5 December 2025 · 321 pages"
+hal   = "https://theses.hal.science/tel-05648979"
+file  = "assets/Fabbro_PhD_thesis.pdf"
+cover = "assets/cover_thesis.jpg"
+
+[[phd.documents]]
+kind  = "Defence slides"
+title = "PhD defence presentation"
+meta  = "Toulouse, 5 December 2025 · 109 slides"
+file  = "assets/Fabbro_PhD_defence_slides.pdf"
+cover = "assets/cover_defence_slides.jpg"
+
+# ── Publications ─────────────────────────────────────────────────────────────
+#  Newest first. Fields: authors, title, journal, volume, pages, year, doi, arxiv, note,
+#  toc (path to the TOC graphic, shown on the right; put images in assets/toc/).
+#  Your own name is highlighted automatically.
+[[publications]]
+authors = "G. Fabbro, H.-M. Høyvik"
+title   = "The Ensemble Ghost Interaction in Fractional-Occupation Hartree–Fock: Occupation Covariance, Pair Rank, and Prescribed Ensembles of Determinants"
+journal = "arXiv"
+year    = 2026
+arxiv   = "2610.38873"
+toc     = "assets/toc/ensemble_ghost.png"
+note    = "Corresponding author"
+
+[[publications]]
+authors = "G. Fabbro, J. Brandejs, T. Saue"
+title   = "The nuclear electric quadrupole moment of ⁸⁷Sr from highly accurate molecular relativistic calculations"
+journal = "J. Phys. Chem. A"
+volume  = "130"
+pages   = "3187–3196"
+year    = 2026
+doi     = "10.1021/acs.jpca.6c00683"
+toc     = "assets/toc/sr87.png"
+note    = "Cover art"
+
+[[publications]]
+authors = "G. Fabbro, J. Brandejs, T. Saue"
+title   = "Highly Accurate Expectation Values Using High-Order Relativistic Coupled Cluster Theory"
+journal = "J. Phys. Chem. A"
+volume  = "129"
+pages   = "6942–6958"
+year    = 2025
+doi     = "10.1021/acs.jpca.5c02844"
+toc     = "assets/toc/expectation_values.jpg"
+
+[[publications]]
+authors = "G. Fabbro, J. Pototschnig, T. Saue"
+title   = "Beyond the Dailey–Townes Model: Chemical Information from the Electric Field Gradient"
+journal = "J. Phys. Chem. A"
+volume  = "129"
+pages   = "1006–1025"
+year    = 2025
+doi     = "10.1021/acs.jpca.4c06884"
+toc     = "assets/toc/dailey_townes.png"
+
+# ── Software ─────────────────────────────────────────────────────────────────
+[[software]]
+name = "DIRAC"
+url  = "https://diracprogram.org"
+text = "Coupled-cluster expectation values at the CCSDT and CCSDTQ levels."
+
+[[software]]
+name = "tenpi"
+url  = ""
+text = "Automated generation of Λ-equations and coupled-cluster density matrices for arbitrary excitation rank."
+
+[[software]]
+name = "eT"
+url  = "https://etprogram.org"
+text = "Fractional-occupation (FON-UHF) and state-averaged (SA-UHF) Hartree–Fock."
+
+# ── Talks ────────────────────────────────────────────────────────────────────
+#  Newest first. `slides` (optional) = PDF in assets/talks/, shown as a "Slides" button.
+[[talks]]
+date   = "Oct 2026"
+event  = "Theoretical Chemistry seminar, NTNU"
+place  = "Trondheim, NO"
+title  = "Open Quantum Systems: When molecules exchange electrons with their environment"
+kind   = "Seminar"
+slides = "assets/talks/2026-10_open_quantum_systems.pdf"
+
+[[talks]]
+date   = "May 2026"
+event  = "TK seminars, NTNU"
+place  = "Trondheim, NO"
+title  = "Relativistic Effects: A “Gentle” Introduction"
+kind   = "Seminar"
+slides = "assets/talks/2026-05_relativistic_effects_TK.pdf"
+
+[[talks]]
+date   = "Jun 2025"
+event  = "Seminar, NTNU"
+place  = "Trondheim, NO"
+title  = "Highly Accurate Expectation Values using High-Order Relativistic Coupled Cluster Theory"
+kind   = "Seminar"
+slides = "assets/talks/2025-06_trondheim_expectation_values.pdf"
+
+[[talks]]
+date   = "Oct 2024"
+event  = "14th International Conference on Relativistic Effects in Heavy-Element Chemistry and Physics (REHE)"
+place  = "Amersfoort, NL"
+title  = "Highly Accurate Molecular Properties using High-Order Relativistic Coupled Cluster Theory"
+kind   = "Contributed talk"
+slides = "assets/talks/2024-10_REHE.pdf"
+
+[[talks]]
+date   = "Jun 2024"
+event  = "27th DIRAC Working Group Meeting"
+place  = "Odense, DK"
+title  = "Molecular Properties through Coupled Cluster Theory"
+kind   = "Talk"
+slides = "assets/talks/2024-06_DIRAC_meeting.pdf"
+
+[[talks]]
+date   = "May 2024"
+event  = "20th ETSF Young Researchers' Meeting"
+place  = "Toulouse, FR"
+title  = "Coupled Cluster Method for Molecular Properties"
+kind   = "Contributed talk"
+slides = "assets/talks/2024-05_YRM_toulouse.pdf"
+
+[[talks]]
+date   = "Dec 2023"
+event  = "Seminar, University of Trieste"
+place  = "Trieste, IT"
+title  = "Beyond the Dailey–Townes model: chemical information from the Electric Field Gradient in a Relativistic framework"
+kind   = "Seminar"
+slides = "assets/talks/2023-12_trieste_dailey_townes.pdf"
+
+[[talks]]
+date   = "Jun 2023"
+event  = "26th DIRAC Working Group Meeting"
+place  = "Odense, DK"
+title  = "Beyond the Dailey–Townes model: chemical information from the electric field gradient"
+kind   = "Talk"
+slides = "assets/talks/2023-06_DIRAC_meeting.pdf"
+
+# ── Education ────────────────────────────────────────────────────────────────
+[[education]]
+period = "2022 – 2025"
+degree = "PhD in Theoretical Chemistry"
+place  = "Université de Toulouse, France"
+note   = "Advisor: Dr. Trond Saue"
+
+[[education]]
+period = "2020 – 2022"
+degree = "European Master in Theoretical Chemistry and Computational Modelling"
+place  = "Università degli Studi di Trieste, Italy"
+note   = "110/110 cum laude"
+
+[[education]]
+period = "2017 – 2020"
+degree = "Bachelor's degree in Chemistry"
+place  = "Università degli Studi di Trieste, Italy"
+note   = "110/110"
+
+# ── Service ──────────────────────────────────────────────────────────────────
+[[service]]
+date = "May 2025"
+text = "Co-organizer, 21st ETSF Young Researchers' Meeting, Trieste"
+
+[[service]]
+date = "Jun 2024"
+text = "Evaluation committee, M2 TCCM end-of-Master defences, Toulouse"
