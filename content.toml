@@ -34,13 +34,13 @@ cv      = "assets/cv_gfabbro.pdf"
 # ── About ────────────────────────────────────────────────────────────────────
 [about]
 text = """
-I am a theoretical chemist working on **coupled-cluster theory**, the hierarchy of methods that
-underpins much of high-accuracy quantum chemistry. My work sits where method development meets
-implementation: deriving the equations, generating them automatically, and making them run in
-production electronic-structure codes such as [DIRAC](https://diracprogram.org) and
+I am a theoretical chemist working on **electronic structure theory**, in the fields of
+**Relativistic Quantum Chemistry** and **Open Quantum Systems**. My work sits where method
+development meets implementation: deriving the equations and making them run in production
+quantum-chemistry codes such as [DIRAC](https://diracprogram.org) and
 [eT](https://etprogram.org).
 
-I obtained my PhD in Theoretical Chemistry at the Université de Toulouse with Dr. Trond Saue,
+I obtained my PhD in Theoretical Chemistry at the Université de Toulouse with [Dr. Trond Saue](https://dirac.ups-tlse.fr/saue/),
 working on highly accurate relativistic coupled-cluster methods for molecular properties.
 I am now a researcher at NTNU in Norway.
 """
@@ -53,10 +53,6 @@ text = """
 I am part of the **OpenQuantum** project, where I develop coupled-cluster theory for
 *electronically open systems* — molecules and extended systems, such as surfaces, that exchange
 electrons with their surroundings.
-
-A first ingredient is the reference: I implemented fractional-occupation (FON-UHF) and
-state-averaged (SA-UHF) Hartree–Fock in eT, and studied the spurious *ensemble ghost interaction*
-that appears in fractional-occupation Hartree–Fock.
 """
 
 # ── Research lines ───────────────────────────────────────────────────────────
@@ -64,10 +60,9 @@ that appears in fractional-occupation Hartree–Fock.
 #  open, relativity, nucleus, code
 [[research]]
 icon  = "open"
-title = "Coupled cluster for open systems"
+title = "Open Quantum Systems"
 text  = """
-Extending coupled-cluster theory to molecules and surfaces whose electron number is not fixed,
-starting from ensemble and fractional-occupation reference states.
+Extending coupled-cluster theory to molecules and surfaces whose electron number is not fixed.
 """
 
 [[research]]
@@ -92,25 +87,27 @@ title    = "Highly Accurate Molecular Properties using High-Order Relativistic C
 place    = "Université de Toulouse · Laboratoire de Chimie et Physique Quantiques"
 period   = "2022 – 2025"
 defended = "5 December 2025"
-advisor  = "Dr. Trond Saue"
-project  = "HAMP-vQED"
+advisor  = "[Dr. Trond Saue](https://dirac.ups-tlse.fr/saue/)"
+project  = "[HAMP-vQED](https://dirac.ups-tlse.fr/hamp-vqed/)"
 text = """
-During my PhD I was a member of the **HAMP-vQED** project, focused on highly accurate relativistic
+During my PhD I was a member of the [**HAMP-vQED**](https://dirac.ups-tlse.fr/hamp-vqed/) project, focused on highly accurate relativistic
 coupled-cluster methods.
 
 I developed a diagram-based framework for the **automated generation of expectation values at
-arbitrary excitation rank**, built on the `tenpi` equation generator, and used it to implement
-expectation values at the CCSDT and CCSDTQ levels in the DIRAC program package.
+arbitrary excitation rank**, built on the [`tenpi`](https://gitlab.com/janbrandejs/tenpi) equation generator, and used it to implement
+expectation values at the CCSDT and CCSDTQ levels in the DIRAC program package. I then extended these
+expectation values to a massively parallel, multi-node framework based on the distributed-memory
+Cyclops Tensor Framework, giving access to larger active spaces than single-node implementations.
 
 The main target was the electric field gradient (EFG) at nuclear positions — both its chemical
 interpretation beyond the Dailey–Townes model and its use for the reliable extraction of nuclear
-electric quadrupole moments, such as that of ⁸⁷Sr.
+electric quadrupole moments.
 """
 
 # Highlights shown as a short list next to the PhD text
 highlights = [
   "Automated Λ-equations and CC density matrices at arbitrary excitation rank (`tenpi`)",
-  "CCSDT and CCSDTQ expectation values in DIRAC",
+  "CCSDT and CCSDTQ expectation values in DIRAC, including a massively parallel multi-node version",
   "Chemical analysis of the electric field gradient beyond Dailey–Townes",
   "Nuclear quadrupole moment of ⁸⁷Sr from molecular calculations",
 ]
@@ -184,7 +181,7 @@ text = "Coupled-cluster expectation values at the CCSDT and CCSDTQ levels."
 
 [[software]]
 name = "tenpi"
-url  = ""
+url  = "https://gitlab.com/janbrandejs/tenpi"
 text = "Automated generation of Λ-equations and coupled-cluster density matrices for arbitrary excitation rank."
 
 [[software]]
@@ -263,19 +260,24 @@ slides = "assets/talks/2023-06_DIRAC_meeting.pdf"
 period = "2022 – 2025"
 degree = "PhD in Theoretical Chemistry"
 place  = "Université de Toulouse, France"
-note   = "Advisor: Dr. Trond Saue"
+note   = "Advisor: [Dr. Trond Saue](https://dirac.ups-tlse.fr/saue/)"
 
 [[education]]
 period = "2020 – 2022"
 degree = "European Master in Theoretical Chemistry and Computational Modelling"
 place  = "Università degli Studi di Trieste, Italy"
-note   = "110/110 cum laude"
+note   = "110/110 cum laude · Advisor: [Prof. Mauro Stener](https://scholar.google.com/citations?user=h7vYfQYAAAAJ)"
 
 [[education]]
 period = "2017 – 2020"
 degree = "Bachelor's degree in Chemistry"
 place  = "Università degli Studi di Trieste, Italy"
-note   = "110/110"
+note   = "110/110 · Advisor: [Prof. Daniele Toffoli](https://scholar.google.com/citations?user=KcIhxW8AAAAJ)"
+
+# ── Supervision ──────────────────────────────────────────────────────────────
+[[supervision]]
+date = "Aug – Dec 2026"
+text = "Erasmus student **Elias Neumann** — manuscript: *Relativistic effects on the bond length of CuH, AgH, and AuH*"
 
 # ── Service ──────────────────────────────────────────────────────────────────
 [[service]]

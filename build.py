@@ -244,7 +244,7 @@ def build(c: dict) -> str:
         p = c["phd"]
         hl = "".join(f"<li>{inline(h)}</li>" for h in p.get("highlights", []))
         facts = "".join(
-            f"<div><dt>{k}</dt><dd>{esc(v)}</dd></div>"
+            f"<div><dt>{k}</dt><dd>{inline(v)}</dd></div>"
             for k, v in (("Period", p.get("period")), ("Defended", p.get("defended")), ("Advisor", p.get("advisor")),
                          ("Project", p.get("project")), ("Institution", p.get("place"))) if v)
         add("phd", "PhD", f"""
@@ -288,20 +288,24 @@ def build(c: dict) -> str:
         add("talks", "Talks", f'<ul class="talks">{rows}</ul>')
 
     # CV: education + service
-    if c.get("education") or c.get("service"):
+    if c.get("education") or c.get("service") or c.get("supervision"):
         edu = "".join(
             f"""<li class="reveal"><span class="tl-period">{esc(e.get('period', ''))}</span>
 <p class="tl-title">{esc(e.get('degree', ''))}</p><p class="tl-place">{esc(e.get('place', ''))}</p>
-{f'<p class="tl-note">{esc(e["note"])}</p>' if e.get('note') else ''}</li>""" for e in c.get("education", []))
+{f'<p class="tl-note">{inline(e["note"])}</p>' if e.get('note') else ''}</li>""" for e in c.get("education", []))
         srv = "".join(
             f'<li class="reveal"><span class="tl-period">{esc(s.get("date", ""))}</span><p class="tl-title">{inline(s.get("text", ""))}</p></li>'
             for s in c.get("service", []))
+        sup = "".join(
+            f'<li class="reveal"><span class="tl-period">{esc(s.get("date", ""))}</span><p class="tl-title">{inline(s.get("text", ""))}</p></li>'
+            for s in c.get("supervision", []))
+        sup_block = f'<h3 class="col-head">Supervision</h3><ol class="timeline">{sup}</ol>' if sup else ""
         cv_btn = (f'<a class="button" href="{esc(links["cv"])}">{LINK_ICONS["cv"]}Download full CV</a>'
                   if links.get("cv") else "")
-        add("cv", "Education & service", f"""
+        add("cv", "Education, supervision & service", f"""
 <div class="cv-grid">
   <div><h3 class="col-head">Education</h3><ol class="timeline">{edu}</ol></div>
-  <div><h3 class="col-head">Service</h3><ol class="timeline">{srv}</ol>
+  <div>{sup_block}<h3 class="col-head">Service</h3><ol class="timeline">{srv}</ol>
   <div class="cv-cta reveal">{cv_btn}</div></div>
 </div>""")
 

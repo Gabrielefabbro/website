@@ -148,7 +148,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round
 .card .icon { width: 52px; height: 52px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; margin-bottom: 20px; }
 .card .icon svg { width: 34px; height: 34px; stroke-width: 1.5; }
 .card .icon .fill { fill: var(--accent-2); stroke: var(--accent-2); }
-.card h3 { font-size: 1.3rem; margin-bottom: 10px; }
+.card { container-type: inline-size; }
+.card h3 { font-size: min(1.3rem, 5.8cqi); white-space: nowrap; margin-bottom: 10px; }
 .card p { color: var(--ink-2); font-size: .96rem; margin: 0; }
 
 /* phd */
@@ -295,3 +296,4 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round
 .tag.slides { display: inline-flex; align-items: center; gap: 5px; color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
 .tag.slides svg { width: 13px; height: 13px; }
 @media (max-width: 640px) { .talk-side { flex-direction: row; align-items: center; } }
+.timeline + .col-head { margin-top: 44px; }
