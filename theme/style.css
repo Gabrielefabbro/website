@@ -38,7 +38,7 @@
 
 /* ── base ─────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+html { scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--bg); color: var(--ink);
   font: 400 17px/1.65 var(--sans); -webkit-font-smoothing: antialiased;
@@ -258,7 +258,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round
 .footer p { margin: 0; }
 
 /* reveal on scroll (only when JS is running) */
-.js .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; }
+.js .reveal { opacity: 1; transform: none; }
 .js .reveal.in { opacity: 1; transform: none; }
 
 /* ── responsive ───────────────────────────────────────────────────────────── */
@@ -300,16 +300,12 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round
 
 /* ── background: equipotential lines of two quadrupoles (theme/field.py) ─── */
 /* A static image on its own compositing layer: rasterised once, scrolling only moves layers. */
-html { background: var(--bg); }
+/* static: an ordinary background image at the top of the page that scrolls with it */
+html { background: var(--bg) url("assets/field-light.svg") center top / max(100%, 1400px) auto no-repeat; }
 body { background: transparent; }
-.field-bg {
-  position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background: url("assets/field-light.svg") center / cover no-repeat;
-  transform: translateZ(0); will-change: transform;
-}
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .field-bg { background-image: url("assets/field-dark.svg"); } }
-:root[data-theme="dark"] .field-bg { background-image: url("assets/field-dark.svg"); }
-@media (max-width: 720px) { .field-bg { opacity: .5; background-position: 85% center; } }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { background-image: url("assets/field-dark.svg"); } }
+:root[data-theme="dark"] { background-image: url("assets/field-dark.svg"); }
+.field-bg { display: none; }
 .section { border-top-color: color-mix(in srgb, var(--line) 70%, transparent); }
 .section:nth-of-type(even) { background: color-mix(in srgb, var(--bg-2) 62%, transparent); }
 .kicker { letter-spacing: .02em; }

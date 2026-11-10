@@ -37,11 +37,6 @@
     return;
   }
 
-  // reveal on scroll
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-  }, { rootMargin: "0px 0px -8% 0px" });
-  document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
 
   // highlight current section in nav
   var links = {};
@@ -51,7 +46,12 @@
       if (!e.isIntersecting) return;
       Object.values(links).forEach(function (a) { a.classList.remove("active"); });
       var a = links[e.target.id];
-      if (a) { a.classList.add("active"); a.scrollIntoView({ block: "nearest", inline: "nearest" }); }
+      if (a) {
+        a.classList.add("active");
+        // keep the active link visible in the (horizontally scrollable) nav WITHOUT touching page scroll
+        var bar = a.parentNode, l = a.offsetLeft, r = l + a.offsetWidth;
+        if (l < bar.scrollLeft || r > bar.scrollLeft + bar.clientWidth) bar.scrollLeft = l - 16;
+      }
     });
   }, { rootMargin: "-45% 0px -50% 0px" });
   document.querySelectorAll("main section[id]").forEach(function (s) { spy.observe(s); });
