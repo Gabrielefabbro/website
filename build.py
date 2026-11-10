@@ -337,7 +337,7 @@ def build(c: dict) -> str:
 </style>
 </head>
 <body>
-<div class="field-bg" aria-hidden="true">{field_svg()}</div>
+<div class="field-bg" aria-hidden="true"></div>
 <a class="skip" href="#about">Skip to content</a>
 <nav class="topnav" aria-label="Sections">
   <div class="wrap nav-inner">
@@ -395,6 +395,8 @@ def main() -> int:
     if (ROOT / "assets").exists():
         shutil.copytree(ROOT / "assets", OUT / "assets")
     (OUT / "index.html").write_text(build(content))
+    for theme in ("light", "dark"):
+        (OUT / "assets" / f"field-{theme}.svg").write_text(field_svg(theme))
     (OUT / ".nojekyll").write_text("")
     print(f"✓ built {OUT / 'index.html'}")
     return 0

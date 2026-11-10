@@ -90,7 +90,16 @@ def _path(line):
     return "M" + " ".join(f"{x:g} {y:g}" for x, y in pts)
 
 
-def field_svg() -> str:
+# colours per theme: (positive lines, negative lines, overall opacity, opacity in the middle)
+THEMES = {
+    "light": ("#1d5c66", "#b0562d", 0.48, 0.22),
+    "dark":  ("#7cc3cc", "#e59a72", 0.50, 0.22),
+}
+
+
+def field_svg(theme: str = "light") -> str:
+    """Standalone SVG file (used as a CSS background image, rasterised once by the browser)."""
+    pos_c, neg_c, alpha, mid = THEMES[theme]
     charges = _charges()
     nx, ny = W // STEP + 2, H // STEP + 2
     grid = [[_potential(i * STEP, j * STEP, charges) for i in range(nx)] for j in range(ny)]
@@ -100,11 +109,17 @@ def field_svg() -> str:
         lv = vmax * (0.05 + 0.95 * k / (LEVELS + 1))
         pos += [_path(l) for l in _contours(grid, nx, ny, lv)]
         neg += [_path(l) for l in _contours(grid, nx, ny, -lv)]
-    nuclei = "".join(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{4 if q > 0 else 6}" class="{"qp" if q > 0 else "qn"}"/>'
+    nuclei = "".join(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{4 if q > 0 else 6}" fill="{neg_c if q > 0 else pos_c}"/>'
                      for x, y, q in charges)
-    return (f'<svg viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
-            f'<path class="eq-pos" d="{" ".join(pos)}"/><path class="eq-neg" d="{" ".join(neg)}"/>'
-            f'<g class="nuclei">{nuclei}</g></svg>')
+    # horizontal fade: full strength at the edges, faint behind the text column
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid slice">'
+            f'<defs><linearGradient id="f"><stop offset="0" stop-color="#fff"/>'
+            f'<stop offset=".32" stop-color="#fff" stop-opacity="{mid}"/><stop offset=".68" stop-color="#fff" stop-opacity="{mid}"/>'
+            f'<stop offset="1" stop-color="#fff"/></linearGradient>'
+            f'<mask id="m"><rect width="{W}" height="{H}" fill="url(#f)"/></mask></defs>'
+            f'<g mask="url(#m)" opacity="{alpha}" fill="none" stroke-width="1.1">'
+            f'<path stroke="{pos_c}" d="{" ".join(pos)}"/><path stroke="{neg_c}" d="{" ".join(neg)}"/>'
+            f'{nuclei}</g></svg>')
 
 
 if __name__ == "__main__":

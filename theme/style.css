@@ -299,25 +299,19 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round
 .timeline + .col-head { margin-top: 44px; }
 
 /* ── background: equipotential lines of two quadrupoles (theme/field.py) ─── */
+/* A static image on its own compositing layer: rasterised once, scrolling only moves layers. */
 html { background: var(--bg); }
 body { background: transparent; }
 .field-bg {
   position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  opacity: var(--field-opacity, .48);
-  -webkit-mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,.22) 32%, rgba(0,0,0,.22) 68%, #000 100%);
-          mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,.22) 32%, rgba(0,0,0,.22) 68%, #000 100%);
+  background: url("assets/field-light.svg") center / cover no-repeat;
+  transform: translateZ(0); will-change: transform;
 }
-.field-bg svg { width: 100%; height: 100%; display: block; }
-.field-bg path { fill: none; stroke-width: .9; vector-effect: non-scaling-stroke; }
-.field-bg .eq-pos { stroke: var(--accent); }
-.field-bg .eq-neg { stroke: var(--accent-2); }
-.field-bg .qp { fill: var(--accent-2); }
-.field-bg .qn { fill: var(--accent); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .field-bg { background-image: url("assets/field-dark.svg"); } }
+:root[data-theme="dark"] .field-bg { background-image: url("assets/field-dark.svg"); }
+@media (max-width: 720px) { .field-bg { opacity: .5; background-position: 85% center; } }
 .section { border-top-color: color-mix(in srgb, var(--line) 70%, transparent); }
 .section:nth-of-type(even) { background: color-mix(in srgb, var(--bg-2) 62%, transparent); }
 .kicker { letter-spacing: .02em; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --field-opacity: .55; } }
-:root[data-theme="dark"] { --field-opacity: .55; }
-@media (max-width: 720px) {
-  .field-bg { -webkit-mask-image: none; mask-image: none; --field-opacity: .24; }
-}
+/* sticky nav: no backdrop blur (re-blurring the background on every frame is what made scrolling heavy) */
+.topnav { background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: none; -webkit-backdrop-filter: none; }
