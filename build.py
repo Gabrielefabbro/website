@@ -14,6 +14,9 @@ import sys
 import tomllib
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent / "theme"))
+from field import field_svg  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "_site"
 
@@ -95,7 +98,7 @@ def section(sid: str, num: int, label: str, body: str, cls: str = "") -> str:
     return f"""
 <section id="{sid}" class="section {cls}">
   <div class="wrap">
-    <header class="section-head reveal"><span class="kicker">{num:02d}</span><h2>{esc(label)}</h2></header>
+    <header class="section-head reveal"><span class="kicker">|{num:02d}⟩</span><h2>{esc(label)}</h2></header>
     {body}
   </div>
 </section>"""
@@ -334,6 +337,7 @@ def build(c: dict) -> str:
 </style>
 </head>
 <body>
+<div class="field-bg" aria-hidden="true">{field_svg()}</div>
 <a class="skip" href="#about">Skip to content</a>
 <nav class="topnav" aria-label="Sections">
   <div class="wrap nav-inner">
@@ -346,16 +350,6 @@ def build(c: dict) -> str:
 </nav>
 
 <header id="top" class="hero">
-  <div class="hero-bg" aria-hidden="true">
-    <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice">
-      <g class="orbits">
-        <ellipse cx="300" cy="300" rx="260" ry="92"/>
-        <ellipse cx="300" cy="300" rx="260" ry="92" transform="rotate(60 300 300)"/>
-        <ellipse cx="300" cy="300" rx="260" ry="92" transform="rotate(120 300 300)"/>
-        <ellipse cx="300" cy="300" rx="190" ry="190" class="faint"/>
-      </g>
-    </svg>
-  </div>
   <div class="wrap hero-inner">
     <div class="hero-text">
       <p class="eyebrow">{esc(person.get('role', ''))}</p>
@@ -377,7 +371,7 @@ def build(c: dict) -> str:
 <footer class="footer">
   <div class="wrap footer-inner">
     <p>© {dt.date.today().year} {esc(name)}{f' · <a href="mailto:{esc(links["email"])}">{esc(links["email"])}</a>' if links.get('email') else ''}</p>
-    <p class="muted">Last updated {esc(updated)}</p>
+    <p class="muted">Background: equipotential lines of two nuclear electric quadrupoles · Last updated {esc(updated)}</p>
   </div>
 </footer>
 <script>
