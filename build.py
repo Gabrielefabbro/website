@@ -371,7 +371,7 @@ def build(c: dict) -> str:
 <footer class="footer">
   <div class="wrap footer-inner">
     <p>© {dt.date.today().year} {esc(name)}{f' · <a href="mailto:{esc(links["email"])}">{esc(links["email"])}</a>' if links.get('email') else ''}</p>
-    <p class="muted">Background: equipotential lines of two nuclear electric quadrupoles · Last updated {esc(updated)}</p>
+    <p class="muted">Background: contour lines of a d and a p orbital (the two colours are the two phases) · Last updated {esc(updated)}</p>
   </div>
 </footer>
 <script>

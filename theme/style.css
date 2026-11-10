@@ -298,7 +298,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round
 @media (max-width: 640px) { .talk-side { flex-direction: row; align-items: center; } }
 .timeline + .col-head { margin-top: 44px; }
 
-/* ── background: equipotential lines of two quadrupoles (theme/field.py) ─── */
+/* ── background: d and p orbital contour lines (theme/field.py) ─── */
 /* A static image on its own compositing layer: rasterised once, scrolling only moves layers. */
 /* static: an ordinary background image at the top of the page that scrolls with it */
 html { background: var(--bg) url("assets/field-light.svg") center top / max(100%, 1400px) auto no-repeat; }

@@ -1,39 +1,43 @@
-"""Background artwork: equipotential lines of a few point-charge quadrupoles.
+"""Background artwork: contour lines of two atomic orbitals.
 
-The page background is the electrostatic potential of two linear nuclear-quadrupole-like
-charge distributions (+q, -2q, +q), drawn as contour lines with marching squares.
-Tweak QUADRUPOLES / LEVELS below and rebuild. Pure standard library.
+A d orbital (top right, behind the portrait) and a p orbital (bottom left), drawn as
+iso-lines of the signed wavefunction; the two colours are the two phases (+/-).
+Edit ORBITALS / N_LEVELS below and rebuild. Pure standard library.
 """
 from __future__ import annotations
 
 import math
 
 W, H = 1600, 1000          # SVG viewBox
-STEP = 7                   # grid spacing (smaller = smoother, bigger file)
-LEVELS = 14                # contour levels per sign
+STEP = 6                   # grid spacing (smaller = smoother, bigger file)
+N_LEVELS = 32              # contour lines per phase
+SPACING = 0.92             # ratio between successive levels (closer to 1 = denser lines)
 
-# (centre x, centre y, half-length d, rotation in degrees, strength)
-QUADRUPOLES = [
-    (1360, 230, 120, 24, 1.0),
-    (220, 820, 105, -38, 0.9),
+# kind, centre x, centre y, size, rotation (deg), weight
+ORBITALS = [
+    ("d", 1330, 300, 28, 20, 1 / 40),
+    ("p", 250, 790, 40, -40, 1 / 1.5),
 ]
 
-
-def _charges():
-    out = []
-    for cx, cy, d, rot, s in QUADRUPOLES:
-        a = math.radians(rot)
-        dx, dy = d * math.sin(a), -d * math.cos(a)
-        out += [(cx + dx, cy + dy, s), (cx, cy, -2 * s), (cx - dx, cy - dy, s)]
-    return out
+# colours per theme: (+ phase, - phase, line opacity, opacity behind the text column)
+THEMES = {
+    "light": ("#1d5c66", "#b0562d", 0.55, 0.25),
+    "dark":  ("#7cc3cc", "#e59a72", 0.50, 0.25),
+}
 
 
-def _potential(x, y, charges):
-    v = 0.0
-    for qx, qy, q in charges:
-        v += q / math.sqrt((x - qx) ** 2 + (y - qy) ** 2 + 900.0)
-    # compress the dynamic range so the rings are spread evenly in space
-    return math.copysign(abs(v) ** 0.3, v)
+def _orbital(kind, x, y, cx, cy, s, rot):
+    a = math.radians(rot)
+    u, v = (x - cx) / s, (y - cy) / s
+    X, Z = u * math.cos(a) + v * math.sin(a), -u * math.sin(a) + v * math.cos(a)
+    r = math.hypot(X, Z)
+    if kind == "d":
+        return (2 * Z * Z - X * X) * math.exp(-r / 3)
+    return Z * math.exp(-r / 2)
+
+
+def _psi(x, y):
+    return sum(w * _orbital(k, x, y, cx, cy, s, rot) for k, cx, cy, s, rot, w in ORBITALS)
 
 
 def _contours(grid, nx, ny, level):
@@ -59,7 +63,6 @@ def _contours(grid, nx, ny, level):
                 segs.append((pts[0], pts[1]))
             elif len(pts) == 4:
                 segs += [(pts[0], pts[1]), (pts[2], pts[3])]
-    # chain segments into polylines
     ends: dict = {}
     for s in segs:
         for e in s:
@@ -85,43 +88,36 @@ def _contours(grid, nx, ny, level):
 
 
 def _path(line):
-    # drop every other interior point for long lines: invisible at this scale, halves the size
     pts = line[:1] + line[1:-1:2] + line[-1:] if len(line) > 12 else line
     return "M" + " ".join(f"{x:g} {y:g}" for x, y in pts)
 
 
-# colours per theme: (positive lines, negative lines, overall opacity, opacity in the middle)
-THEMES = {
-    "light": ("#1d5c66", "#b0562d", 0.48, 0.22),
-    "dark":  ("#7cc3cc", "#e59a72", 0.50, 0.22),
-}
+_cache: dict = {}
+
+
+def _paths():
+    if not _cache:
+        nx, ny = W // STEP + 2, H // STEP + 2
+        grid = [[_psi(i * STEP, j * STEP) for i in range(nx)] for j in range(ny)]
+        m = max(abs(v) for row in grid for v in row)
+        levels = [m * SPACING ** k for k in range(2, 2 + N_LEVELS)]
+        _cache["pos"] = " ".join(_path(l) for lv in levels for l in _contours(grid, nx, ny, lv))
+        _cache["neg"] = " ".join(_path(l) for lv in levels for l in _contours(grid, nx, ny, -lv))
+    return _cache["pos"], _cache["neg"]
 
 
 def field_svg(theme: str = "light") -> str:
-    """Standalone SVG file (used as a CSS background image, rasterised once by the browser)."""
+    """Standalone SVG file, used as a static CSS background image."""
     pos_c, neg_c, alpha, mid = THEMES[theme]
-    charges = _charges()
-    nx, ny = W // STEP + 2, H // STEP + 2
-    grid = [[_potential(i * STEP, j * STEP, charges) for i in range(nx)] for j in range(ny)]
-    vmax = max(max(abs(v) for v in row) for row in grid) * 0.75
-    pos, neg = [], []
-    for k in range(1, LEVELS + 1):
-        lv = vmax * (0.05 + 0.95 * k / (LEVELS + 1))
-        pos += [_path(l) for l in _contours(grid, nx, ny, lv)]
-        neg += [_path(l) for l in _contours(grid, nx, ny, -lv)]
-    nuclei = "".join(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{4 if q > 0 else 6}" fill="{neg_c if q > 0 else pos_c}"/>'
-                     for x, y, q in charges)
-    # horizontal fade: full strength at the edges, faint behind the text column
+    pos, neg = _paths()
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid slice">'
             f'<defs><linearGradient id="f"><stop offset="0" stop-color="#fff"/>'
-            f'<stop offset=".32" stop-color="#fff" stop-opacity="{mid}"/><stop offset=".68" stop-color="#fff" stop-opacity="{mid}"/>'
+            f'<stop offset=".34" stop-color="#fff" stop-opacity="{mid}"/><stop offset=".62" stop-color="#fff" stop-opacity="{mid}"/>'
             f'<stop offset="1" stop-color="#fff"/></linearGradient>'
             f'<mask id="m"><rect width="{W}" height="{H}" fill="url(#f)"/></mask></defs>'
             f'<g mask="url(#m)" opacity="{alpha}" fill="none" stroke-width="1.1">'
-            f'<path stroke="{pos_c}" d="{" ".join(pos)}"/><path stroke="{neg_c}" d="{" ".join(neg)}"/>'
-            f'{nuclei}</g></svg>')
+            f'<path stroke="{pos_c}" d="{pos}"/><path stroke="{neg_c}" d="{neg}"/></g></svg>')
 
 
 if __name__ == "__main__":
-    s = field_svg()
-    print(f"{len(s) / 1e3:.0f} kB")
+    print(f"{len(field_svg()) / 1e3:.0f} kB")
